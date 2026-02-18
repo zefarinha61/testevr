@@ -43,13 +43,23 @@
 
             <!-- Charts Area -->
             <section class="charts-section">
-                <div class="chart-container">
-                    <h3>Distribuição por Linha</h3>
+                <div class="chart-container full-width">
+                    <h3>Distribuição por Linha (Kg)</h3>
                     <canvas id="lineChart"></canvas>
                 </div>
-                <div class="chart-container">
-                    <h3>Top Produtos</h3>
-                    <canvas id="productChart"></canvas>
+                <div class="chart-row">
+                    <div class="chart-container half-width">
+                        <h3>Top 5 Artigos</h3>
+                        <div class="chart-wrapper-small">
+                            <canvas id="productChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container half-width">
+                        <h3>Top 5 Clientes</h3>
+                        <div class="chart-wrapper-small">
+                            <canvas id="clientChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </section>
 

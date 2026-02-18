@@ -168,44 +168,64 @@ function updateCharts() {
     }
 
     // Gráfico de Produtos (Top 5)
-    const productCtx = document.getElementById('productChart');
-    // Usar CDU_Artigo ou CDU_Descricao
-    const productKey = 'CDU_Artigo';
+    updateTop5Chart(document.getElementById('productChart'), 'productChart', 'CDU_Artigo', 'Top Artigos');
 
+    // Gráfico de Clientes (Top 5)
+    updateTop5Chart(document.getElementById('clientChart'), 'clientChart', 'CDU_NomeCliente', 'Top Clientes');
+}
+
+// Helper genérico para Top 5 Pie/Doughnut charts
+function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
     if (state.data.length > 0) {
-        const productCounts = {};
+        const counts = {};
         state.data.forEach(row => {
-            const product = row[productKey] || 'Desconhecido';
-            productCounts[product] = (productCounts[product] || 0) + 1;
+            const key = row[dataKey] || 'Desconhecido';
+            // Somar Peso Liquido se possível, senão contar
+            const weight = Number(row['CDU_PesoLiquido']) || 0;
+            counts[key] = (counts[key] || 0) + weight;
         });
 
         // Top 5
-        const sortedProducts = Object.entries(productCounts)
+        const sorted = Object.entries(counts)
             .sort((a, b) => b[1] - a[1])
             .slice(0, 5);
 
-        if (state.productChart) state.productChart.destroy();
+        // Outros
+        // const totalOthers = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(5).reduce((acc, curr) => acc + curr[1], 0);
+        // if(totalOthers > 0) sorted.push(['Outros', totalOthers]);
 
-        state.productChart = new Chart(productCtx, {
+        if (state[chartStateKey]) state[chartStateKey].destroy();
+
+        state[chartStateKey] = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: sortedProducts.map(i => i[0]),
+                labels: sorted.map(i => i[0]),
                 datasets: [{
-                    data: sortedProducts.map(i => i[1]),
+                    label: 'Peso (Kg)',
+                    data: sorted.map(i => Number(i[1].toFixed(2))),
                     backgroundColor: [
                         '#3b82f6',
                         '#10b981',
                         '#f59e0b',
                         '#ef4444',
-                        '#8b5cf6'
+                        '#8b5cf6',
+                        '#64748b'
                     ],
                     borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false, // Importante para o wrapper CSS controlar o tamanho
                 plugins: {
-                    legend: { position: 'right', labels: { color: '#94a3b8' } }
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#94a3b8',
+                            boxWidth: 12,
+                            font: { size: 11 }
+                        }
+                    }
                 }
             }
         });
