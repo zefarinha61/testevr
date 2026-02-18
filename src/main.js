@@ -185,9 +185,24 @@ function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
         const counts = {};
         state.data.forEach(row => {
             const key = row[dataKey] || 'Desconhecido';
-            // Somar Peso Liquido se possível, senão contar
-            const weight = Number(row['CDU_PesoLiquido']) || 0;
-            counts[key] = (counts[key] || 0) + weight;
+            let value = 0;
+
+            if (chartStateKey === 'buPriceChart') {
+                // Cálculo de Valor: Peso * Preço
+                const weight = parseFloat(row['CDU_PesoLiquido']) || 0;
+                const price = parseFloat(row['CDU_PrecoVenda']) || 0;
+                value = weight * price;
+            } else {
+                // Padrão: Soma do Peso Líquido (para outros gráficos)
+                // Nota: Top 5 sempre usa Peso como base atualmente, exceto se mudarmos a lógica.
+                // Mas aqui dataKey é usado para agrupar. O valor somado é sempre Peso, 
+                // a menos que especifiquemos outra métrica.
+                // Como a função original somava 'weight' fixo, vamos manter isso 
+                // mas permitir flexibilidade se quisermos contar.
+                value = parseFloat(row['CDU_PesoLiquido']) || 0;
+            }
+
+            counts[key] = (counts[key] || 0) + value;
         });
 
         // Top 5
@@ -206,7 +221,7 @@ function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
             data: {
                 labels: sorted.map(i => i[0]),
                 datasets: [{
-                    label: 'Peso (Kg)',
+                    label: label || 'Valor', // Use dynamic label or default
                     data: sorted.map(i => Number(i[1].toFixed(2))),
                     backgroundColor: [
                         '#3b82f6',
