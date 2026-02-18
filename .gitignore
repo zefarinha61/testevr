@@ -1,0 +1,10 @@
+
+node_modules/
+dist/
+.DS_Store
+.env
+# Não ignorar public/data se quisermos os dados no repo (Netlify precisa processar ou já ter os dados?)
+# O plano é processar no Netlify build: "npm run process-data"
+# Então podemos ignorar public/data e processar lá.
+# MAS VR.xlsx tem de ir.
+public/data/
