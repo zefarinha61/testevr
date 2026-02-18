@@ -157,6 +157,7 @@ function updateCharts() {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false, // Permite ajustar altura pelo CSS
                 plugins: {
                     legend: { display: false }
                 },
