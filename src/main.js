@@ -94,13 +94,14 @@ async function handleSelectionChange() {
 
         updateKPIs();
         updateCharts();
-        updateTable();
-
+        updateKPIs();
+        updateCharts();
+        // updateTable(); // Removido
     } catch (error) {
         console.error('Erro ao carregar dados:', error);
         state.data = [];
         updateKPIs();
-        updateTable();
+        // updateTable(); // Removido
     }
 }
 
@@ -172,6 +173,9 @@ function updateCharts() {
 
     // Gráfico de Clientes (Top 5)
     updateTop5Chart(document.getElementById('clientChart'), 'clientChart', 'CDU_NomeCliente', 'Top Clientes');
+
+    // Gráfico de Unidade de Negócio
+    updateTop5Chart(document.getElementById('buChart'), 'buChart', 'CDU_UnidadeNegocioDescricao', 'Unidade de Negócio');
 }
 
 // Helper genérico para Top 5 Pie/Doughnut charts
@@ -209,7 +213,9 @@ function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
                         '#f59e0b',
                         '#ef4444',
                         '#8b5cf6',
-                        '#64748b'
+                        '#64748b',
+                        '#06b6d4',
+                        '#ec4899'
                     ],
                     borderWidth: 0
                 }]

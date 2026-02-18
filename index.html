@@ -43,10 +43,21 @@
 
             <!-- Charts Area -->
             <section class="charts-section">
-                <div class="chart-container full-width">
-                    <h3>Distribuição por Linha (Kg)</h3>
-                    <canvas id="lineChart"></canvas>
+                <!-- Row 1: Lines and Business Units -->
+                <div class="chart-row">
+                    <div class="chart-container two-thirds-width">
+                        <h3>Distribuição por Linha (Kg)</h3>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                    <div class="chart-container one-third-width">
+                        <h3>Unidade de Negócio</h3>
+                        <div class="chart-wrapper-small">
+                            <canvas id="buChart"></canvas>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Row 2: Products and Clients -->
                 <div class="chart-row">
                     <div class="chart-container half-width">
                         <h3>Top 5 Artigos</h3>
@@ -63,20 +74,18 @@
                 </div>
             </section>
 
-            <!-- Data Table -->
+            <!-- Data Table (Hidden) -->
+            <!-- 
             <section class="data-section">
                 <h3>Dados Detalhados</h3>
                 <div class="table-responsive">
                     <table id="dataTable">
-                        <thead>
-                            <!-- Headers serão gerados dinamicamente -->
-                        </thead>
-                        <tbody>
-                            <!-- Dados serão inseridos aqui -->
-                        </tbody>
+                        <thead></thead>
+                        <tbody></tbody>
                     </table>
                 </div>
-            </section>
+            </section> 
+            -->
         </main>
     </div>
     <script type="module" src="/src/main.js"></script>

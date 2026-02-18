@@ -117,8 +117,32 @@ select:focus {
 
 .chart-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(12, 1fr);
+    /* 12 column grid for flexibility */
     gap: 20px;
+}
+
+.chart-container.half-width {
+    grid-column: span 6;
+}
+
+.chart-container.two-thirds-width {
+    grid-column: span 8;
+}
+
+.chart-container.one-third-width {
+    grid-column: span 4;
+}
+
+/* Responsive adjustment */
+@media (max-width: 1024px) {
+
+    .chart-container.half-width,
+    .chart-container.two-thirds-width,
+    .chart-container.one-third-width {
+        grid-column: span 12;
+        /* Stack on smaller screens */
+    }
 }
 
 .chart-container {
