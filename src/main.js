@@ -238,50 +238,6 @@ function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
     }
 }
 
-function updateTable() {
-    // Limpar tabela
-    dataTableHead.innerHTML = '';
-    dataTableBody.innerHTML = '';
-
-    if (state.data.length === 0) return;
-
-    // Colunas explícitas para melhor UX
-    const displayKeys = [
-        'CDU_OrdemFabrico',
-        'CDU_Artigo',
-        'CDU_Descricao',
-        'CDU_LoteFilkemp',
-        'CDU_PesoLiquido',
-        'CDU_LinhaProducao',
-        'CDU_Estado'
-    ];
-
-    const trHead = document.createElement('tr');
-    displayKeys.forEach(key => {
-        const th = document.createElement('th');
-        // Remover prefixo CDU_ para display
-        th.textContent = key.replace('CDU_', '');
-        trHead.appendChild(th);
-    });
-    dataTableHead.appendChild(trHead);
-
-    // Rows (Limitar a 100 para performance de renderização na tabela)
-    state.data.slice(0, 100).forEach(row => {
-        const tr = document.createElement('tr');
-        displayKeys.forEach(key => {
-            const td = document.createElement('td');
-            let val = row[key];
-
-            // Formatar números se necessário
-            if (typeof val === 'number' && key.includes('Peso')) {
-                val = val.toFixed(2);
-            }
-
-            td.textContent = val !== null && val !== undefined ? val : '';
-            tr.appendChild(td);
-        });
-        dataTableBody.appendChild(tr);
-    });
-}
+// function updateTable() { ... } // Removido
 
 init();
