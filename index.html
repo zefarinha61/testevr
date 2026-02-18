@@ -43,37 +43,39 @@
 
             <!-- Charts Area -->
             <section class="charts-section">
-                <!-- Row 1: Line Chart -->
-                <div class="chart-container full-width">
+                <!-- All charts as equal grid items -->
+                <div class="chart-container">
                     <h3>Distribuição por Linha (Kg)</h3>
-                    <canvas id="lineChart"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="lineChart"></canvas>
+                    </div>
                 </div>
 
-                <!-- Row 2: Circular Charts (4 columns) -->
-                <div class="chart-row">
-                    <div class="chart-container quarter-width">
-                        <h3>Unidade Negócio (Kg)</h3>
-                        <div class="chart-wrapper-small">
-                            <canvas id="buChart"></canvas>
-                        </div>
+                <div class="chart-container">
+                    <h3>Unidade Negócio (Kg)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="buChart"></canvas>
                     </div>
-                    <div class="chart-container quarter-width">
-                        <h3>Unidade Negócio (€)</h3>
-                        <div class="chart-wrapper-small">
-                            <canvas id="buPriceChart"></canvas>
-                        </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Unidade Negócio (€)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="buPriceChart"></canvas>
                     </div>
-                    <div class="chart-container quarter-width">
-                        <h3>Top 5 Artigos</h3>
-                        <div class="chart-wrapper-small">
-                            <canvas id="productChart"></canvas>
-                        </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Top 5 Artigos (Kg)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="productChart"></canvas>
                     </div>
-                    <div class="chart-container quarter-width">
-                        <h3>Top 5 Clientes</h3>
-                        <div class="chart-wrapper-small">
-                            <canvas id="clientChart"></canvas>
-                        </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Top 5 Clientes (Kg)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="clientChart"></canvas>
                     </div>
                 </div>
             </section>
