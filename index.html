@@ -39,39 +39,42 @@
                     <h3>Produção Total</h3>
                     <p class="kpi-value" id="kpiTotalProduction">-</p>
                 </div>
-                <!-- Placeholder para KPI futuro -->
-                <div class="kpi-card">
-                    <h3>Lucro Estimado (Demo)</h3>
-                    <p class="kpi-value" style="color: var(--success-color);">€ 0.00</p>
-                </div>
             </section>
 
             <!-- Charts Area -->
             <section class="charts-section">
-                <!-- Row 1: Lines and Business Units -->
+                <!-- Row 1: Line Chart -->
+                <div class="chart-container full-width">
+                    <h3>Distribuição por Linha (Kg)</h3>
+                    <canvas id="lineChart"></canvas>
+                </div>
+
+                <!-- Row 2: Business Units (Weight & Price) -->
                 <div class="chart-row">
-                    <div class="chart-container two-thirds-width">
-                        <h3>Distribuição por Linha (Kg)</h3>
-                        <canvas id="lineChart"></canvas>
-                    </div>
-                    <div class="chart-container one-third-width">
-                        <h3>Unidade de Negócio</h3>
+                    <div class="chart-container half-width">
+                        <h3>Unidade de Negócio (Kg)</h3>
                         <div class="chart-wrapper-small">
                             <canvas id="buChart"></canvas>
                         </div>
                     </div>
+                    <div class="chart-container half-width">
+                        <h3>Unidade de Negócio (Valor)</h3>
+                        <div class="chart-wrapper-small">
+                            <canvas id="buPriceChart"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Row 2: Products and Clients -->
+                <!-- Row 3: Products and Clients -->
                 <div class="chart-row">
                     <div class="chart-container half-width">
-                        <h3>Top 5 Artigos</h3>
+                        <h3>Top 5 Artigos (Kg)</h3>
                         <div class="chart-wrapper-small">
                             <canvas id="productChart"></canvas>
                         </div>
                     </div>
                     <div class="chart-container half-width">
-                        <h3>Top 5 Clientes</h3>
+                        <h3>Top 5 Clientes (Kg)</h3>
                         <div class="chart-wrapper-small">
                             <canvas id="clientChart"></canvas>
                         </div>
