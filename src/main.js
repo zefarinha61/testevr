@@ -177,6 +177,9 @@ function updateCharts() {
 
     // Gráfico de Unidade de Negócio
     updateTop5Chart(document.getElementById('buChart'), 'buChart', 'CDU_UnidadeNegocioDescricao', 'Unidade de Negócio');
+
+    // Gráfico de Unidade de Negócio (€)
+    updateTop5Chart(document.getElementById('buPriceChart'), 'buPriceChart', 'CDU_UnidadeNegocioDescricao', 'Unidade de Negócio (€)');
 }
 
 // Helper genérico para Top 5 Pie/Doughnut charts
