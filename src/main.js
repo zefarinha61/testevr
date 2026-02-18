@@ -131,8 +131,12 @@ function updateCharts() {
             lineCounts[line] = (lineCounts[line] || 0) + 1;
         });
 
-        const labels = Object.keys(lineCounts);
-        const data = Object.values(lineCounts);
+        const sortedEntries = Object.entries(lineCounts).sort((a, b) => {
+            return a[0].localeCompare(b[0], undefined, { numeric: true, sensitivity: 'base' });
+        });
+
+        const labels = sortedEntries.map(entry => entry[0]);
+        const data = sortedEntries.map(entry => entry[1]);
 
         if (state.lineChart) state.lineChart.destroy();
 
