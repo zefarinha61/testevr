@@ -118,6 +118,36 @@ function updateKPIs() {
     } else {
         kpiTotalProduction.textContent = 'N/A';
     }
+
+    // KPI Desperdício
+    const kpiGlobalWaste = document.getElementById('kpiGlobalWaste');
+    if (state.data.length > 0) {
+        let totalNet = 0;
+        let totalWaste = 0;
+
+        state.data.forEach(row => {
+            totalNet += Number(row['CDU_PesoLiquido']) || 0;
+            totalWaste += Number(row['CDU_DesperdicioReal']) || 0;
+        });
+
+        const totalGross = totalNet + totalWaste;
+        let wastePercentage = 0;
+
+        if (totalGross > 0) {
+            wastePercentage = (totalWaste / totalGross) * 100;
+        }
+
+        kpiGlobalWaste.textContent = wastePercentage.toFixed(2) + '%';
+
+        // Color Coding
+        kpiGlobalWaste.style.color = wastePercentage > 5 ? '#ef4444' : '#10b981'; // Red if > 5%, else Green
+        // Add absolute value in title for tooltip
+        kpiGlobalWaste.title = `Total Desperdício: ${totalWaste.toLocaleString()} Kg`;
+
+    } else {
+        kpiGlobalWaste.textContent = '0%';
+        kpiGlobalWaste.style.color = 'var(--text-primary)';
+    }
 }
 
 function updateCharts() {
