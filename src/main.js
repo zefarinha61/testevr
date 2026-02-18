@@ -128,7 +128,9 @@ function updateCharts() {
         const lineCounts = {};
         state.data.forEach(row => {
             const line = row[lineKey] || 'Outros';
-            lineCounts[line] = (lineCounts[line] || 0) + 1;
+            // Somar Peso Liquido em vez de contar
+            const weight = Number(row['CDU_PesoLiquido']) || 0;
+            lineCounts[line] = (lineCounts[line] || 0) + weight;
         });
 
         const sortedEntries = Object.entries(lineCounts).sort((a, b) => {
@@ -136,7 +138,8 @@ function updateCharts() {
         });
 
         const labels = sortedEntries.map(entry => entry[0]);
-        const data = sortedEntries.map(entry => entry[1]);
+        // Arredondar valores para 2 casas decimais
+        const data = sortedEntries.map(entry => Number(entry[1].toFixed(2)));
 
         if (state.lineChart) state.lineChart.destroy();
 
@@ -145,7 +148,7 @@ function updateCharts() {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Ordens por Linha',
+                    label: 'Peso Líquido (Kg)',
                     data: data,
                     backgroundColor: '#3b82f6',
                     borderRadius: 4
