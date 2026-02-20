@@ -147,19 +147,19 @@ select:focus {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     /* 3 Equal Columns */
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .chart-container {
     background: var(--card-bg);
-    padding: 15px;
+    padding: 10px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
 
-    height: 320px;
-    /* Fixed Homogeneous Height */
+    height: 230px;
+    /* Fixed Homogeneous Height to fit without scroll */
 
     display: flex;
     flex-direction: column;

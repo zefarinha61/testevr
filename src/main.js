@@ -8,7 +8,9 @@ const state = {
     currentMonth: null,
     data: [],
     lineChart: null,
-    productChart: null
+    productChart: null,
+    clientPriceChart: null,
+    wasteChart: null
 };
 
 // Elementos DOM
@@ -127,7 +129,9 @@ function updateKPIs() {
 
         state.data.forEach(row => {
             totalNet += Number(row['CDU_PesoLiquido']) || 0;
-            totalWaste += Number(row['CDU_DesperdicioReal']) || 0;
+            const wasteReal = Number(row['CDU_DesperdicioReal']) || 0;
+            const wasteCalc = Number(row['CDU_DesperdicioCalculado']) || 0;
+            totalWaste += (wasteReal + wasteCalc);
         });
 
         const totalGross = totalNet + totalWaste;
@@ -203,13 +207,19 @@ function updateCharts() {
     updateTop5Chart(document.getElementById('productChart'), 'productChart', 'CDU_Artigo', 'Top Artigos');
 
     // Gráfico de Clientes (Top 5)
-    updateTop5Chart(document.getElementById('clientChart'), 'clientChart', 'CDU_NomeCliente', 'Top Clientes');
+    updateTop5Chart(document.getElementById('clientChart'), 'clientChart', 'CDU_NomeCliente', 'Top Clientes (Kg)');
+
+    // Gráfico de Clientes (Top 5 €)
+    updateTop5Chart(document.getElementById('clientPriceChart'), 'clientPriceChart', 'CDU_NomeCliente', 'Top Clientes (€)');
 
     // Gráfico de Unidade de Negócio
     updateTop5Chart(document.getElementById('buChart'), 'buChart', 'CDU_UnidadeNegocioDescricao', 'Unidade de Negócio');
 
     // Gráfico de Unidade de Negócio (€)
     updateTop5Chart(document.getElementById('buPriceChart'), 'buPriceChart', 'CDU_UnidadeNegocioDescricao', 'Unidade de Negócio (€)');
+
+    // Gráfico Taxa de Desperdício por Linha (%)
+    updateWasteChart(document.getElementById('wasteChart'), 'wasteChart', 'CDU_LinhaProducao', 'Taxa Desperdício (%)');
 }
 
 // Helper genérico para Top 5 Pie/Doughnut charts
@@ -220,7 +230,7 @@ function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
             const key = row[dataKey] || 'Desconhecido';
             let value = 0;
 
-            if (chartStateKey === 'buPriceChart') {
+            if (chartStateKey.includes('PriceChart')) {
                 // Cálculo de Valor: Peso * Preço
                 const weight = parseFloat(row['CDU_PesoLiquido']) || 0;
                 const price = parseFloat(row['CDU_PrecoVenda']) || 0;
@@ -281,6 +291,90 @@ function updateTop5Chart(ctx, chartStateKey, dataKey, label) {
                             font: { size: 11 }
                         }
                     }
+                }
+            }
+        });
+    }
+}
+
+// Helper para Gráfico de Desperdício (Bar Chart)
+function updateWasteChart(ctx, chartStateKey, dataKey, label) {
+    if (state.data.length > 0) {
+        const lineStats = {};
+
+        state.data.forEach(row => {
+            const key = row[dataKey] || 'Outros';
+            const weight = parseFloat(row['CDU_PesoLiquido']) || 0;
+            const wasteReal = parseFloat(row['CDU_DesperdicioReal']) || 0;
+            const wasteCalc = parseFloat(row['CDU_DesperdicioCalculado']) || 0;
+            const totalRowWaste = wasteReal + wasteCalc;
+
+            if (!lineStats[key]) {
+                lineStats[key] = { net: 0, waste: 0 };
+            }
+            lineStats[key].net += weight;
+            lineStats[key].waste += totalRowWaste;
+        });
+
+        // Calcular Percentagens
+        const dataToPlot = [];
+        const labels = [];
+        const bgColors = [];
+
+        Object.entries(lineStats)
+            .sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true, sensitivity: 'base' }))
+            .forEach(([line, stats]) => {
+                const totalGross = stats.net + stats.waste;
+                let percentage = 0;
+
+                if (totalGross > 0) {
+                    percentage = (stats.waste / totalGross) * 100;
+                }
+
+                labels.push(line);
+                dataToPlot.push(Number(percentage.toFixed(2)));
+
+                // Red if > 5%, Green if <= 5%
+                bgColors.push(percentage > 5 ? '#ef4444' : '#10b981');
+            });
+
+        if (state[chartStateKey]) state[chartStateKey].destroy();
+
+        state[chartStateKey] = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: dataToPlot,
+                    backgroundColor: bgColors,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.y + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#334155' },
+                        ticks: {
+                            callback: function (value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: { grid: { display: false } }
                 }
             }
         });
